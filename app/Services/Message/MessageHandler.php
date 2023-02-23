@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Services\Message;
 
 use Illuminate\Support\Facades\Session;
 
-class Message
+class MessageHandler
 {
-    public static function show(string $text, bool $status = true)
+    public function show(string $text, bool $status = true)
     {
         Session::put('message', [
             'text' => $text,

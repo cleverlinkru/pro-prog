@@ -40,6 +40,13 @@ services:
         networks:
             - backend
 
+    redis:
+        image: redis
+        volumes:
+            - redis-data:/var/lib/redis
+        networks:
+            - backend
+
 networks:
     frontend:
         external:
@@ -48,3 +55,4 @@ networks:
 
 volumes:
     postgres-data:
+    redis-data:
