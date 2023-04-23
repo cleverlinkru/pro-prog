@@ -14,6 +14,16 @@ class MessageHandler
         ]);
     }
 
+    public function success(string $text)
+    {
+        $this->show($text);
+    }
+
+    public function error(string $text)
+    {
+        $this->show($text, false);
+    }
+
     public static function get()
     {
         $message = Session::get('message');

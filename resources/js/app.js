@@ -10,7 +10,7 @@ import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
 import axios from "axios";
 import VueAxios from 'vue-axios';
-import Message from '@/Plugins/Message.vue';
+import '@/Plugins/Message.vue';
 import VueTheMask from 'vue-the-mask'
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
@@ -24,7 +24,6 @@ createInertiaApp({
             .use(ZiggyVue, Ziggy)
             .use(Antd)
             .use(VueAxios, axios)
-            .use(Message)
             .use(VueTheMask)
             .mount(el);
     },

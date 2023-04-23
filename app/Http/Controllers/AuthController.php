@@ -87,6 +87,15 @@ class AuthController extends Controller
         }
     }
 
+    public function logout()
+    {
+        Auth::guard('web')->logout();
+        session()->invalidate();
+        session()->regenerateToken();
+
+        return redirect()->route('auth.main');
+    }
+
 
     protected function sendCode(string $phone, string $method)
     {
