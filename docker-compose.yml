@@ -25,6 +25,18 @@ services:
         networks:
             - backend
 
+    queue:
+        build: ./.docker/queue
+        volumes:
+            - ./:/var/www/code/
+            - ./.docker/php/config/php.ini:/usr/local/etc/php/conf.d/php.ini
+        restart: always
+        networks:
+            - backend
+        depends_on:
+            - pgsql
+            - redis
+
     pgsql:
         image: postgres:latest
         ports:

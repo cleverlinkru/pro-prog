@@ -1,6 +1,6 @@
 <script setup>
 import AuthLayout from '@/Layouts/Auth.vue';
-import AuthForm from '@/Components/AuthForm.vue';
+import AuthForm from '@/Components/Auth/AuthForm.vue';
 </script>
 
 <template>
