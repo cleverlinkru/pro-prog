@@ -80,7 +80,6 @@ export default {
             } else {
                 this.form.post(route('postCategory.store'));
             }
-
         },
     },
 }

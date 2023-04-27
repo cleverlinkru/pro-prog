@@ -4,15 +4,15 @@ namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Post\PostCategoryRequest;
-use App\Models\Post;
-use App\Models\PostCategory;
+use App\Models\Post\Post;
+use App\Models\Post\PostCategory;
 use App\Services\Message\Message;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class PostCategoryController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $postCategories = PostCategory
             ::whereNull('category_id')
@@ -24,14 +24,14 @@ class PostCategoryController extends Controller
             ->orderBy('title')
             ->get();
 
-        return Inertia::render('PostCategory/Index', [
+        return Inertia::render('Post/PostCategory/Index', [
             'postCategories' => $postCategories,
             'postCategory' => null,
             'posts' => $posts,
         ]);
     }
 
-    public function show(Request $request, PostCategory $postCategory)
+    public function show(PostCategory $postCategory)
     {
         $postCategories = PostCategory
             ::where('category_id', $postCategory->id)
@@ -43,7 +43,7 @@ class PostCategoryController extends Controller
             ->orderBy('title')
             ->get();
 
-        return Inertia::render('PostCategory/Index', [
+        return Inertia::render('Post/PostCategory/Index', [
             'postCategories' => $postCategories,
             'postCategory' => $postCategory,
             'posts' => $posts,
@@ -54,7 +54,7 @@ class PostCategoryController extends Controller
     {
         $parentPostCategoryId = $request->input('parent-post-category');
         $parentPostCategory = $parentPostCategoryId ? PostCategory::findOrFail($parentPostCategoryId) : null;
-        return Inertia::render('PostCategory/Create', [
+        return Inertia::render('Post/PostCategory/Create', [
             'parentPostCategory' => $parentPostCategory,
             'postCategories' => PostCategory::orderBy('title')->get(),
         ]);
@@ -62,7 +62,7 @@ class PostCategoryController extends Controller
 
     public function edit(PostCategory $postCategory)
     {
-        return Inertia::render('PostCategory/Edit', [
+        return Inertia::render('Post/PostCategory/Edit', [
             'postCategory' => $postCategory,
             'postCategories' => PostCategory::whereNot('id', $postCategory->id)->orderBy('title')->get(),
         ]);

@@ -84,7 +84,6 @@ export default {
             } else {
                 this.form.post(route('post.store'));
             }
-
         },
     },
 }

@@ -112,4 +112,6 @@ return [
 
     'password_timeout' => 10800,
 
+    'on_sign_up' => env('ON_SIGN_UP', true),
+
 ];
