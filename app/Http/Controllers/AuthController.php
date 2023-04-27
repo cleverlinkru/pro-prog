@@ -20,7 +20,9 @@ class AuthController extends Controller
 
     public function main()
     {
-        return Inertia::render('Auth');
+        return Inertia::render('Auth', [
+            'onSignUp' => config('auth.on_sign_up')
+        ]);
     }
 
     public function signInSendCode(SignInSendCodeRequest $request)

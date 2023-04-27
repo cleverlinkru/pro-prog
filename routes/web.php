@@ -23,11 +23,11 @@ Route::group([
         Route::post('sign-in-send-code', [\App\Http\Controllers\AuthController::class, 'signInSendCode'])
             ->name('signInSendCode');
         Route::post('sign-up-send-code', [\App\Http\Controllers\AuthController::class, 'signUpSendCode'])
-            ->name('signUpSendCode');
+            ->name('signUpSendCode')->middleware('can:sign-up');
         Route::post('sign-in', [\App\Http\Controllers\AuthController::class, 'signIn'])
             ->name('signIn');
         Route::post('sign-up', [\App\Http\Controllers\AuthController::class, 'signUp'])
-            ->name('signUp');
+            ->name('signUp')->middleware('can:sign-up');
         Route::middleware('auth')
             ->get('logout', [\App\Http\Controllers\AuthController::class, 'logout'])
             ->name('logout');
@@ -39,9 +39,7 @@ Route::group(['middleware' => 'auth'], function () {
         return redirect()->route('postCategory.index');
     })->name('home');
 
-    Route::resource('post', \App\Http\Controllers\Post\PostController::class)
-        ->except(['index']);
-
+    Route::resource('post', \App\Http\Controllers\Post\PostController::class)->except(['index']);
     Route::resource('post-category', \App\Http\Controllers\Post\PostCategoryController::class)
         ->names([
             'index' => 'postCategory.index',
@@ -52,4 +50,14 @@ Route::group(['middleware' => 'auth'], function () {
             'update' => 'postCategory.update',
             'destroy' => 'postCategory.destroy',
         ]);
+
+    Route::resource('product', \App\Http\Controllers\Shop\ProductController::class)->except(['show']);
+    Route::resource('order', \App\Http\Controllers\Shop\OrderController::class)->only(['index']);
+});
+
+Route::group(['as' => 'quickBuy.'], function () {
+    Route::get('quick-buy/{product}', [\App\Http\Controllers\Shop\QuickBuyController::class, 'show'])
+        ->name('show');
+    Route::post('quick-buy/{product}/buy', [\App\Http\Controllers\Shop\QuickBuyController::class, 'buy'])
+        ->name('buy');
 });

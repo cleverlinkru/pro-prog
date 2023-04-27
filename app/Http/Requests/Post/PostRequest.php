@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Post;
 
-use App\Models\PostCategory;
+use App\Models\Post\PostCategory;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PostRequest extends FormRequest

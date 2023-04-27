@@ -1,6 +1,8 @@
 <script setup>
 import AuthLayout from '@/Layouts/Auth.vue';
 import AuthForm from '@/Components/Auth/AuthForm.vue';
+
+defineProps(['onSignUp']);
 </script>
 
 <template>
@@ -11,7 +13,7 @@ import AuthForm from '@/Components/Auth/AuthForm.vue';
                 <a-tab-pane key='sign-in' tab='Авторизация'>
                     <auth-form/>
                 </a-tab-pane>
-                <a-tab-pane key='sign-up' tab='Регистрация'>
+                <a-tab-pane key='sign-up' tab='Регистрация' v-if="onSignUp">
                     <auth-form :register="true"/>
                 </a-tab-pane>
             </a-tabs>

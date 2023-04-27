@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Post\PostRequest;
-use App\Models\Post;
-use App\Models\PostCategory;
+use App\Models\Post\Post;
+use App\Models\Post\PostCategory;
 use App\Services\Message\Message;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class PostController extends Controller
 {
-    public function show(Request $request, Post $post)
+    public function show(Post $post)
     {
-        return Inertia::render('Post/Show', [
+        return Inertia::render('Post/Post/Show', [
             'post' => $post,
         ]);
     }
@@ -23,7 +23,7 @@ class PostController extends Controller
     {
         $postCategoryId = $request->input('post-category');
         $postCategory = $postCategoryId ? PostCategory::findOrFail($postCategoryId) : null;
-        return Inertia::render('Post/Create', [
+        return Inertia::render('Post/Post/Create', [
             'postCategoryId' => $postCategory,
             'postCategories' => PostCategory::orderBy('title')->get(),
         ]);
@@ -31,7 +31,7 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
-        return Inertia::render('Post/Edit', [
+        return Inertia::render('Post/Post/Edit', [
             'post' => $post,
             'postCategories' => PostCategory::orderBy('title')->get(),
         ]);
