@@ -23,11 +23,11 @@ Route::group([
         Route::post('sign-in-send-code', [\App\Http\Controllers\AuthController::class, 'signInSendCode'])
             ->name('signInSendCode');
         Route::post('sign-up-send-code', [\App\Http\Controllers\AuthController::class, 'signUpSendCode'])
-            ->name('signUpSendCode')->middleware('can:sign-up');
+            ->name('signUpSendCode')->middleware('canSignUp');
         Route::post('sign-in', [\App\Http\Controllers\AuthController::class, 'signIn'])
             ->name('signIn');
         Route::post('sign-up', [\App\Http\Controllers\AuthController::class, 'signUp'])
-            ->name('signUp')->middleware('can:sign-up');
+            ->name('signUp')->middleware('canSignUp');
         Route::middleware('auth')
             ->get('logout', [\App\Http\Controllers\AuthController::class, 'logout'])
             ->name('logout');
