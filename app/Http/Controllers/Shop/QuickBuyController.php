@@ -7,11 +7,17 @@ use App\Http\Requests\Shop\QuickBuyRequest;
 use App\Models\Shop\Order;
 use App\Models\Shop\Product;
 use App\Models\User;
-use App\Services\YooKassa\Client;
+use App\Services\Analytics;
+use App\Services\Payment;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class QuickBuyController extends Controller
 {
+    public function __construct(protected Analytics $analytics, protected Payment $payment)
+    {
+    }
+
     public function show(Product $product)
     {
         return Inertia::render('Shop/QuickBuy', [
@@ -35,43 +41,34 @@ class QuickBuyController extends Controller
             'user_id' => $user->id,
             'product_id' => $product->id,
             'price' => $product->price,
+            'meta' => [
+                'yandexClientId' => $this->analytics->getYandexClientId(),
+            ],
         ]);
 
-        $client = new Client();
-        $client->setAuth(config('yookassa.shopId'), config('yookassa.secretKey'));
-        $payment = $client->createPayment(
-            array(
-                'amount' => array(
-                    'value' => $order->price,
-                    'currency' => 'RUB',
-                ),
-                'confirmation' => array(
-                    'type' => 'redirect',
-                    'return_url' => config('yookassa.returnUrl'),
-                ),
-                'capture' => true,
-                'description' => 'Order '.$order->id,
-                'receipt' => array(
-                    'customer' => array(
-                        'email' => 'contact@clever-link.ru',
-                    ),
-                    'items' => array(
-                        array(
-                            'description' => $order->product->title,
-                            'amount' => array(
-                                'value' => $order->price,
-                                'currency' => 'RUB',
-                            ),
-                            'vat_code' => '1',
-                            'quantity' => '1',
-                        ),
-                    ),
-                ),
-            ),
-            uniqid('', true)
-        );
-        $url = $payment->getConfirmation()->getConfirmationUrl();
+        $confirmationUrl = $this->payment->pay($order->price, $order->id, $order->product->title);
 
-        return Inertia::location($url);
+        return Inertia::location($confirmationUrl);
+    }
+
+    public function confirm()
+    {
+        $res = $this->payment->confirm();
+
+        if (!$res['success']) {
+            return response('Error', 500);
+        }
+
+        $order = Order::findOrFail($res['orderId']);
+        $order->update([
+            'paid' => true,
+        ]);
+
+
+        $order->update([
+            'paid' => true,
+        ]);
+
+        $this->analytics->sendYandexConversion($order->price, $order->meta['yandexClientId']);
     }
 }

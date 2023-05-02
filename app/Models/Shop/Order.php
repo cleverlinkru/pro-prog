@@ -16,6 +16,12 @@ class Order extends Model
         'user_id',
         'product_id',
         'price',
+        'paid',
+        'meta',
+    ];
+
+    protected $casts = [
+        'meta' => 'array',
     ];
 
     public function user(): BelongsTo

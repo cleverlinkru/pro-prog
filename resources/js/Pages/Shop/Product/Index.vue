@@ -37,7 +37,7 @@ defineProps(['products']);
                         >
                             <a-button>Удалить</a-button>
                         </a-popconfirm>
-                        <a :href="route('quickBuy.show', record.id)" target="_blank">Быстрая покупка</a>
+                        <a :href="route('shop.quickBuy.show', record.id)" target="_blank">Быстрая покупка</a>
                     </a-space>
                 </template>
             </template>
