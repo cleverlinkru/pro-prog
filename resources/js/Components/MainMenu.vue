@@ -3,12 +3,14 @@ import {
     FileOutlined,
     ShoppingOutlined,
     WalletOutlined,
+    SettingOutlined,
+    AreaChartOutlined,
 } from '@ant-design/icons-vue';
 import {Link} from '@inertiajs/inertia-vue3';
 </script>
 
 <template>
-    <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
+    <a-menu v-model="openKeys" v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
         <Link :href="route('postCategory.index')">
             <a-menu-item key="postCategory.index">
                 <file-outlined/>
@@ -27,6 +29,18 @@ import {Link} from '@inertiajs/inertia-vue3';
                 <span>Покупки</span>
             </a-menu-item>
         </Link>
+        <a-sub-menu key="settings">
+            <template #icon>
+                <setting-outlined/>
+            </template>
+            <template #title>Настройки</template>
+            <Link :href="route('analytics.settings')">
+                <a-menu-item key="analytics.settings">
+                    <area-chart-outlined/>
+                    <span>Аналитика</span>
+                </a-menu-item>
+            </Link>
+        </a-sub-menu>
     </a-menu>
 </template>
 
@@ -34,6 +48,7 @@ import {Link} from '@inertiajs/inertia-vue3';
 export default {
     data() {
         return {
+            openKeys: [],
             selectedKeys: [],
         };
     },

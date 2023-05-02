@@ -53,11 +53,24 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('product', \App\Http\Controllers\Shop\ProductController::class)->except(['show']);
     Route::resource('order', \App\Http\Controllers\Shop\OrderController::class)->only(['index']);
+
+    Route::group(['prefix' => 'analytics', 'as' => 'analytics.'], function () {
+        Route::get('settings', [\App\Http\Controllers\AnalyticsController::class, 'settings'])
+            ->name('settings');
+        Route::get('yandex-connect', [\App\Http\Controllers\AnalyticsController::class, 'yandexConnect'])
+            ->name('yandexConnect');
+        Route::post('save-token', [\App\Http\Controllers\AnalyticsController::class, 'saveYandexToken'])
+            ->name('saveYandexToken');
+    });
 });
 
-Route::group(['as' => 'quickBuy.'], function () {
-    Route::get('quick-buy/{product}', [\App\Http\Controllers\Shop\QuickBuyController::class, 'show'])
-        ->name('show');
-    Route::post('quick-buy/{product}/buy', [\App\Http\Controllers\Shop\QuickBuyController::class, 'buy'])
-        ->name('buy');
+Route::group(['prefix' => 'shop', 'as' => 'shop.'], function () {
+    Route::group(['as' => 'quickBuy.'], function () {
+        Route::get('quick-buy/{product}', [\App\Http\Controllers\Shop\QuickBuyController::class, 'show'])
+            ->name('show');
+        Route::post('quick-buy/{product}/buy', [\App\Http\Controllers\Shop\QuickBuyController::class, 'buy'])
+            ->name('buy');
+        Route::post('quick-buy/confirm', [\App\Http\Controllers\Shop\QuickBuyController::class, 'confirm'])
+            ->name('confirm');
+    });
 });

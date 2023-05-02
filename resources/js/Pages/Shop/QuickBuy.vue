@@ -64,7 +64,7 @@ export default {
     },
     methods: {
         onSubmit() {
-            this.form.post(route('quickBuy.buy', this.product.id));
+            this.form.post(route('shop.quickBuy.buy', this.product.id));
         },
     },
 }

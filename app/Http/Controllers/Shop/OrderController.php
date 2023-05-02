@@ -11,7 +11,7 @@ class OrderController extends Controller
     public function index()
     {
         return Inertia::render('Shop/Order/Index', [
-            'orders' => Order::with('user', 'product')->orderBy('id')->get(),
+            'orders' => Order::with('user', 'product')->orderByDesc('created_at')->get(),
         ]);
     }
 }

@@ -20,6 +20,9 @@ defineProps(['orders']);
                 <template v-if="column.key === 'product'">
                     ({{ record.product.id }}) {{ record.product.title }}
                 </template>
+                <template v-if="column.key === 'status'">
+                    {{ record.paid ? 'Оплачен' : '' }}
+                </template>
             </template>
         </a-table>
     </DefaultLayout>
@@ -44,6 +47,15 @@ const columns = [
         title: 'Цена',
         dataIndex: 'price',
         key: 'price',
+    },
+    {
+        title: 'Дата',
+        dataIndex: 'created_at',
+        key: 'created_at',
+    },
+    {
+        title: 'Статус',
+        key: 'status',
     },
 ];
 
