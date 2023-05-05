@@ -13,3 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::group(['prefix' => 'shop/quick-buy', 'as' => 'shop.quickBuy.'], function () {
+    Route::post('confirm', [\App\Http\Controllers\Shop\QuickBuyController::class, 'confirm'])->name('confirm');
+});
