@@ -64,11 +64,8 @@ class QuickBuyController extends Controller
             'paid' => true,
         ]);
 
-
-        $order->update([
-            'paid' => true,
-        ]);
-
-        $this->analytics->sendYandexConversion($order->price, $order->meta['yandexClientId']);
+        if ($order->meta['yandexClientId']) {
+            $this->analytics->sendYandexConversion($order->price, $order->meta['yandexClientId']);
+        }
     }
 }

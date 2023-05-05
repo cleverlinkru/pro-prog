@@ -64,13 +64,8 @@ Route::group(['middleware' => 'auth'], function () {
     });
 });
 
-Route::group(['prefix' => 'shop', 'as' => 'shop.'], function () {
-    Route::group(['as' => 'quickBuy.'], function () {
-        Route::get('quick-buy/{product}', [\App\Http\Controllers\Shop\QuickBuyController::class, 'show'])
-            ->name('show');
-        Route::post('quick-buy/{product}/buy', [\App\Http\Controllers\Shop\QuickBuyController::class, 'buy'])
-            ->name('buy');
-        Route::post('quick-buy/confirm', [\App\Http\Controllers\Shop\QuickBuyController::class, 'confirm'])
-            ->name('confirm');
-    });
+Route::group(['prefix' => 'shop/quick-buy', 'as' => 'shop.quickBuy.'], function () {
+    Route::get('confirm', [\App\Http\Controllers\Shop\QuickBuyController::class, 'confirm'])->name('confirm');
+    Route::get('{product}', [\App\Http\Controllers\Shop\QuickBuyController::class, 'show'])->name('show');
+    Route::post('{product}/buy', [\App\Http\Controllers\Shop\QuickBuyController::class, 'buy'])->name('buy');
 });
