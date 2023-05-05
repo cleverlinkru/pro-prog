@@ -27,6 +27,15 @@ class AuthController extends Controller
 
     public function signInSendCode(SignInSendCodeRequest $request)
     {
+        $user = User::query()
+            ->where('phone', $request->phone)
+            ->where('access_allowed', true)
+            ->first();
+        if (!$user) {
+            Message::error('Доступ запрещён');
+            return redirect(route('auth.main'));
+        }
+
         $phone = $request->input('phone');
         $method = $request->input('method');
 
@@ -77,6 +86,7 @@ class AuthController extends Controller
             $user = User::create([
                 'name' => $name,
                 'phone' => $phone,
+                'access_allowed' => true,
             ]);
             Auth::login($user, true);
             session()->regenerate();
